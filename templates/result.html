@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result — Where to go on vacation?</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main>
+        <header class="page-header">
+            <span class="eyebrow">Analysis result</span>
+            <h1>Your recommendation</h1>
+        </header>
+
+        {% if error %}
+            <div class="error" role="alert">{{ error }}</div>
+        {% elif not recommendation and not items %}
+            <div class="error" role="alert">
+                Something went wrong — no data to display.
+            </div>
+        {% else %}
+            <section class="recommendation">
+                <h2>Claude's recommendation</h2>
+                <p class="recommendation-text">{{ recommendation }}</p>
+            </section>
+
+            {% if items %}
+            <section class="list">
+                <h2>Matched destinations ({{ items|length }})</h2>
+                <div class="table-wrap">
+                    <table>
+                        <caption class="sr-only">
+                            List of destinations matched to your preferences
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Destination</th>
+                                <th scope="col">Country</th>
+                                <th scope="col">Continent</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Cost</th>
+                                <th scope="col">Season</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Visitors</th>
+                                <th scope="col">UNESCO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in items %}
+                            <tr>
+                                <td><strong>{{ d.destination }}</strong></td>
+                                <td>{{ d.country }}</td>
+                                <td>{{ d.continent }}</td>
+                                <td>{{ d.type }}</td>
+                                <td>{{ "%.2f"|format(d.avg_cost) }} USD</td>
+                                <td>{{ d.best_season }}</td>
+                                <td>{{ d.rating }}/5</td>
+                                <td>{{ d.annual_visitors }}M</td>
+                                <td>
+                                    {% if d.unesco|lower in ['yes', 'true', '1'] %}
+                                        <span class="badge badge-yes">Yes</span>
+                                    {% else %}
+                                        <span class="badge badge-no">No</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            {% endif %}
+        {% endif %}
+
+        <a class="back-link" href="{{ url_for('index') }}">Ask again</a>
+    </main>
+</body>
+</html>
