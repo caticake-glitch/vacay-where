@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result — Where to go on vacation?</title>
+    <title>Result - Where to go on vacation?</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -17,7 +17,7 @@
             <div class="error" role="alert">{{ error }}</div>
         {% elif not recommendation and not items %}
             <div class="error" role="alert">
-                Something went wrong — no data to display.
+                Something went wrong - no data to display.
             </div>
         {% else %}
             <section class="recommendation">
